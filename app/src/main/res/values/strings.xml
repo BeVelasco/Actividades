@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Actividades GJ</string>
+    <string name="Lactividades">Registro de actividades en Asys</string>
+    <string name="bregistro">Registro</string>
+    <string name="qremple">QR de Empleado para su registro</string>
+    <string name="title_activity_datos">datos</string>
+    <string name="templeados">Empleados</string>
+    <string name="tdescripcion">Descripcion</string>
+    <string name="treportar">Reportar Actividad</string>
+    <string name="testado">Estado</string>
+
+    <string name="baceptar">Aceptar</string>
+    <string name="bguardar">Guardar</string>
+    <string name="bcancelar">Cancelar</string>
+
+    <string name="tip">Direccion</string>
+</resources>
