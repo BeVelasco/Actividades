@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -16,6 +17,8 @@ import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -123,17 +126,43 @@ public class datos extends AppCompatActivity {
 
             registro.classGlobal global = (registro.classGlobal) getApplication();
 
-            contenido = "http://" + global.getIp_save() + "/GJ/api/WS/acti/user/" +
-                    datemple + "/act/" +
-                    selecionestatus + "/desc/" +
-                    selecionactividad + "/";
 
-            contenido = contenido.replace(" ", "%20");
+            contenido = "http://"+global.getIp_save()+"/api/app/acti";
+
+            JSONObject jo = new JSONObject();
+            jo.put("user", datemple);
+            jo.put("act", selecionestatus);
+            jo.put("desc", selecionactividad);
+
             URL url = new URL(contenido);
 
             try {
                 conexion = (HttpURLConnection) url.openConnection();
-                devuelve = conexion.getResponseMessage();
+                conexion.setDoOutput(true);
+                conexion.setRequestMethod("PUT");
+                conexion.setRequestProperty("Content-Type", "application/json");
+
+                JSONObject jsonParam = new JSONObject();
+                jsonParam.put("data", jo.toString());
+
+                Log.i("JSON", jo.toString());
+
+                DataOutputStream os = null;
+                try {
+                    os = new DataOutputStream(conexion.getOutputStream());
+                }catch (IOException e){
+                    Log.i("Stream", e.getMessage());
+                }
+                //os.writeBytes(URLEncoder.encode(jsonParam.toString(), "UTF-8"));
+                os.writeBytes(jo.toString());
+
+                os.flush();
+                os.close();
+
+                Log.i("STATUS", String.valueOf(conexion.getResponseCode()));
+                Log.i("MSG" , conexion.getResponseMessage());
+
+                String sss = conexion.getResponseMessage();
 
                 if (conexion.getResponseCode() == HttpURLConnection.HTTP_OK) {
                     devuelve = conexion.getResponseMessage();
@@ -148,6 +177,7 @@ public class datos extends AppCompatActivity {
                         result.append(line);
                     }
 
+                    Log.i("Result ", result.toString());
                     JSONObject obj = new JSONObject(result.toString());
 
                     Toast t2 = Toast.makeText(this, "NF: " + getmessjson(obj), Toast.LENGTH_LONG);

@@ -47,7 +47,7 @@ public class registro extends AppCompatActivity {
 
         int versionCode = BuildConfig.VERSION_CODE;
         TextView tver = findViewById(R.id.tversion);
-        tver.setText(versionCode);
+        //tver.setText(versionCode);
 
         final Button btn_registro = findViewById(R.id.bregistro);
 
